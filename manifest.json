@@ -1,7 +1,9 @@
 {
   "name": "GHOST SRG Trading Journal",
   "short_name": "GHOST SRG",
-  "start_url": "./ghost_srg.html",
+
+"start_url": "./index.html",
+
   "display": "standalone",
   "background_color": "#020a12",
   "theme_color": "#020a12",
