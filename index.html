@@ -246,17 +246,51 @@
 
   /* ── RISK SLIDER ── */
   .risk-row { display:flex; align-items:center; gap:12px; }
-  .risk-slider-wrap { flex:1; }
-  input[type=range] {
-    -webkit-appearance:none; width:100%; height:4px;
-    background: linear-gradient(to right, var(--neon) 0%, var(--neon) var(--val,50%), rgba(0,60,100,0.6) var(--val,50%), rgba(0,60,100,0.6) 100%);
-    border-radius:2px; outline:none; cursor:pointer;
+  .risk-slider-wrap { flex:1; position:relative; padding:8px 0; }
+  .risk-slider-wrap { position:relative; }
+  .risk-track-bg {
+    position:absolute; left:0; right:0; top:50%; transform:translateY(-50%);
+    height:8px; border-radius:4px;
+    background: rgba(0,80,130,0.6);
+    border: 1px solid rgba(0,180,255,0.25);
+    pointer-events:none;
   }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
-    background: radial-gradient(circle, #00eeff 0%, #0099cc 100%);
-    box-shadow: 0 0 10px var(--neon), 0 0 20px rgba(0,212,255,0.4); cursor:pointer;
-    border: 2px solid rgba(255,255,255,0.2);
+  .risk-track-fill {
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    height:8px; border-radius:4px;
+    background: linear-gradient(90deg, #00d4ff, #0066aa);
+    box-shadow: 0 0 10px rgba(0,212,255,0.7), 0 0 20px rgba(0,212,255,0.3);
+    pointer-events:none;
+    transition: width 0.1s;
+  }
+  #riskSlider {
+    -webkit-appearance:none; appearance:none;
+    width:100%; height:28px;
+    background: transparent;
+    outline:none; cursor:pointer;
+    position:relative; z-index:2;
+    margin:0; padding:0;
+  }
+  #riskSlider::-webkit-slider-runnable-track {
+    height:8px; border-radius:4px;
+    background: transparent;
+  }
+  #riskSlider::-webkit-slider-thumb {
+    -webkit-appearance:none;
+    width:26px; height:26px; border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #00ffff, #0088cc);
+    box-shadow: 0 0 14px #00d4ff, 0 0 28px rgba(0,212,255,0.5), 0 2px 6px rgba(0,0,0,0.4);
+    cursor:pointer;
+    border: 2px solid rgba(255,255,255,0.4);
+    margin-top:-9px;
+  }
+  #riskSlider::-moz-range-track {
+    height:8px; border-radius:4px; background: transparent;
+  }
+  #riskSlider::-moz-range-thumb {
+    width:26px; height:26px; border-radius:50%; border:none;
+    background: radial-gradient(circle at 35% 35%, #00ffff, #0088cc);
+    box-shadow: 0 0 14px #00d4ff; cursor:pointer;
   }
   .risk-val {
     font-family:var(--font-display); font-size:20px; font-weight:800;
@@ -507,6 +541,8 @@
       <label class="input-label">Risk darajasi</label>
       <div class="risk-row">
         <div class="risk-slider-wrap">
+          <div class="risk-track-bg"></div>
+          <div class="risk-track-fill" id="riskFill" style="width:55%;"></div>
           <input type="range" id="riskSlider" min="1" max="10" value="6" oninput="updateRisk(); calcLot();">
         </div>
         <div class="risk-val" id="riskVal">6%</div>
@@ -810,7 +846,8 @@ function updateRisk() {
   const v = document.getElementById('riskSlider').value;
   document.getElementById('riskVal').textContent = v + '%';
   const pct = ((v - 1) / 9 * 100);
-  document.getElementById('riskSlider').style.setProperty('--val', pct + '%');
+  const fill = document.getElementById('riskFill');
+  if (fill) fill.style.width = pct + '%';
   calcLot();
 }
 
