@@ -1285,6 +1285,26 @@ if ('serviceWorker' in navigator) {
   const swUrl = URL.createObjectURL(blob);
   navigator.serviceWorker.register(swUrl).catch(()=>{});
 }
+
+
+
+
+
+// VISITOR COUNTER
+fetch('https://api.countapi.xyz/hit/ghost-srg-app/visits')
+  .then(r => r.json())
+  .then(data => {
+    const el = document.getElementById('visitorCount');
+    if (el) el.textContent = data.value.toLocaleString();
+  })
+  .catch(() => {});
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
