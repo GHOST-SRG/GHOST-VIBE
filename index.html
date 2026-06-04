@@ -1313,13 +1313,12 @@ if ('serviceWorker' in navigator) {
 
 
 
-
 // VISITOR COUNTER
-fetch('https://api.countapi.xyz/hit/ghost-srg-app/visits')
+fetch('https://api.counterapi.dev/v1/ghost-srg/visits/up')
   .then(r => r.json())
   .then(data => {
     const el = document.getElementById('visitorCount');
-    if (el) el.textContent = data.value.toLocaleString();
+    if (el && data.count) el.textContent = data.count.toLocaleString();
   })
   .catch(() => {});
 
